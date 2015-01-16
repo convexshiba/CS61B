@@ -18,6 +18,17 @@ class Board {
     }
 }
 
+class Position {
+    int y;
+    int x;
+    int item;
+
+    Position(int y, int x) {
+        this.y = y;
+        this.x = x;
+        item =
+    }
+}
 
 public class MachinePlayer extends Player {
     private final int BLACK = -1;

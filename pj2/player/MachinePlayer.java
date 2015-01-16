@@ -263,7 +263,7 @@ public class MachinePlayer extends Player {
     }
 
     private boolean dfs(int y, int x, int parentDirection) {
-
+        return true;
     }
 
     private int[] neighbor(int y, int x, int direction) {

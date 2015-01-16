@@ -149,6 +149,5 @@ public class TestLockDList {
         sl1.insertAfter(new Integer(8), node);
         System.out.println("After insertBefore(3) and insertAfter(3), The first 3 nodes should be 5,3,8. The list is: " +
                 sl1.toString());
-
     }
 }

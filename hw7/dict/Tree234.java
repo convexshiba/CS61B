@@ -101,8 +101,31 @@ public class Tree234 extends IntDictionary {
      * @param key is the key sought.
      */
     public void insert(int key) {
+        Tree234Node node = root;
+        if (node.keys == 3) {
 
+        }
         // Fill in your solution here.
+    }
+
+    private void rearrangeNode(Tree234Node node) {
+        if (node.parent == null) {
+            Tree234Node newRoot = new Tree234Node(null, node.key2);
+            newRoot.child1 = node;
+            node.parent = newRoot;
+            node.keys = 2;
+            node.key2 = node.key3;
+        } else {
+            if (node.parent.keys == 1) {
+                if (node.key2 > node.parent.key1) {
+                    node.parent.key2 = node.key2;
+                    node.keys = 2;
+                    node.parent.keys++;
+
+                }
+
+            }
+        }
     }
 
 

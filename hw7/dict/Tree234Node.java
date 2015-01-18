@@ -123,6 +123,6 @@ class Tree234Node {
     public static void main(String[] args) {
         Tree234Node node1 = new Tree234Node(null, 5);
         Tree234Node node2 = new Tree234Node(node1, 1);
-        System.out.println(node1);
+        node1.printSubtree(1);
     }
 }

@@ -39,6 +39,20 @@ class Tree234Node {
         child4 = null;
     }
 
+    public void insertKey(int key) {
+        if (key <= this.key1) {
+            this.key3 = this.key2;
+            this.key2 = this.key1;
+            this.key1 = key;
+        } else if ((this.keys == 1) || (key <= this.key2)) {
+            this.key3 = this.key2;
+            this.key2 = key;
+        } else {
+            this.key3 = key;
+        }
+        this.keys++;
+    }
+
     /**
      * toString() recursively prints this Tree234Node and its descendants as
      * a String.  Each node is printed in the form such as (for a 3-key node)

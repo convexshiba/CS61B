@@ -101,36 +101,92 @@ public class Tree234 extends IntDictionary {
      * @param key is the key sought.
      */
     public void insert(int key) {
+        if (root == null) {
+            root = new Tree234Node(null, key);
+            return;
+        }
         Tree234Node node = root;
         if (node.keys == 3) {
-
+            if (key <= node.key1) {
+                rearrangeNode(node);
+            } else if (key <= node.key2) {
+                rearrangeNode(node);
+            } else {
+                node = rearrangeNode(node);
+            }
         }
+        while (node.child1 != null) {
+            if (node.keys == 3) {
+                if (key <= node.key1) {
+                    rearrangeNode(node);
+                } else if (key <= node.key2) {
+                    rearrangeNode(node);
+                } else {
+                    node = rearrangeNode(node);
+                }
+            }
+            if (key <= node.key1) {
+                node = node.child1;
+            } else if ((node.keys == 1) || (key <= node.key2)) {
+                node = node.child2;
+            } else if ((node.keys == 2) || (key <= node.key3)) {
+                node = node.child3;
+            } else {
+                node = node.child4;
+            }
+        }
+
+        if (node.keys == 3) {
+            if (key <= node.key2) {
+                rearrangeNode(node);
+            } else {
+                node = rearrangeNode(node);
+            }
+        }
+        node.insertKey(key);
+        size++;
         // Fill in your solution here.
     }
 
-    private void rearrangeNode(Tree234Node node) {
+    private Tree234Node rearrangeNode(Tree234Node node) {
         if (node.parent == null) {
             Tree234Node newRoot = new Tree234Node(null, node.key2);
             newRoot.child1 = node;
             node.parent = newRoot;
-            node.keys = 2;
-            node.key2 = node.key3;
+            newRoot.child2 = deleteNSplitNode(node);
+            root = newRoot;
+            return newRoot.child2;
         } else {
-            if (node.parent.keys == 1) {
-                if (node.key2 > node.parent.key1) {
-                    node.parent.key2 = node.key2;
-                    node.keys = 2;
-                    node.parent.keys = 2;
-                    if (node.key1 < node.parent.child1.key1) {
-                        Tree234Node newChild = new Tree234Node(node.parent, node.key3);
-                        node.parent.child3 = node.parent.child2;
-                        node.parent.child2 = newChild;
-                        node.
-                    }
-                }
-
+            node.parent.insertKey(node.key2);
+            if (node.parent.child1 == node) {
+                node.parent.child4 = node.parent.child3;
+                node.parent.child3 = node.parent.child2;
+                node.parent.child2 = deleteNSplitNode(node);
+                return node.parent.child2;
+            } else if (node.parent.child2 == node) {
+                node.parent.child4 = node.parent.child3;
+                node.parent.child3 = deleteNSplitNode(node);
+                return node.parent.child3;
+            } else if (node.parent.child3 == node) {
+                node.parent.child4 = deleteNSplitNode(node);
+                return node.parent.child4;
+            } else {
+                System.out.println("Error, Node is not child");
+                return new Tree234Node(null, 0);
             }
         }
+    }
+
+    private Tree234Node deleteNSplitNode(Tree234Node node) {
+        Tree234Node newNode = new Tree234Node(node.parent, node.key3);
+        node.keys = 1;
+        if (node.child1 != null) {
+            newNode.child1 = node.child3;
+            newNode.child2 = node.child4;
+            newNode.child1.parent = newNode.child2.parent = newNode;
+            node.child3 = node.child4 = null;
+        }
+        return newNode;
     }
 
 

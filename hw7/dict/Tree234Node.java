@@ -1,6 +1,6 @@
 /* Tree234Node.java */
 
-package dict;
+package hw7.dict;
 
 /**
  * A Tree234Node is a node in a 2-3-4 tree (Tree234 class).
@@ -118,5 +118,11 @@ class Tree234Node {
         if (child1 != null) {
             child1.printSubtree(spaces + 5);
         }
+    }
+
+    public static void main(String[] args) {
+        Tree234Node node1 = new Tree234Node(null, 5);
+        Tree234Node node2 = new Tree234Node(node1, 1);
+        System.out.println(node1);
     }
 }

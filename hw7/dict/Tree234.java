@@ -1,6 +1,6 @@
 /* Tree234.java */
 
-package dict;
+package hw7.dict;
 
 /**
  * A Tree234 implements an ordered integer dictionary ADT using a 2-3-4 tree.
@@ -101,6 +101,7 @@ public class Tree234 extends IntDictionary {
      * @param key is the key sought.
      */
     public void insert(int key) {
+
         // Fill in your solution here.
     }
 

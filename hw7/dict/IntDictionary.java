@@ -1,6 +1,6 @@
 /* IntDictionary.java */
 
-package dict;
+package hw7.dict;
 
 /**
  * An IntDictionary is a mutable ordered dictionary ADT.  Each item is an int

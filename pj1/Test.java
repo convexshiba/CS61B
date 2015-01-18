@@ -6,6 +6,7 @@
  *
  *  @author Jonathan Shewchuk and Joel Galenson
  */
+package pj1;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;

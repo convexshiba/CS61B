@@ -1,6 +1,6 @@
 /* Queue.java */
 
-package list;
+package hw8.list;
 
 public interface Queue {
 
@@ -31,7 +31,7 @@ public interface Queue {
      * dequeue() removes and returns the object at the front of the Queue.
      *
      * @return the item dequeued.
-     * @throws a QueueEmptyException if the Queue is empty.
+     * @throws a hw8.list.QueueEmptyException if the Queue is empty.
      */
     public Object dequeue() throws QueueEmptyException;
 
@@ -39,7 +39,7 @@ public interface Queue {
      * front() returns the object at the front of the Queue.
      *
      * @return the item at the front of the Queue.
-     * @throws a QueueEmptyException if the Queue is empty.
+     * @throws a hw8.list.QueueEmptyException if the Queue is empty.
      */
     public Object front() throws QueueEmptyException;
 

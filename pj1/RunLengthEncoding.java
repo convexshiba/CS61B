@@ -1,4 +1,5 @@
 /* RunLengthEncoding.java */
+package pj1;
 
 /**
  * The RunLengthEncoding class defines an object that run-length encodes

@@ -6,6 +6,7 @@
 /* You may wish to make temporary changes or insert println() statements     */
 /* while testing your code.  When you're finished testing and debugging,     */
 /* though, make sure your code works with the original version of this file. */
+package pj1;
 
 /**
  * The Sobel class is a program that reads an image file in TIFF format,

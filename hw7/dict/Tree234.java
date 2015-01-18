@@ -72,6 +72,7 @@ public class Tree234 extends IntDictionary {
      * @param key is the key sought.
      * @return true if "key" is in the tree; false otherwise.
      */
+    // TODO code cleanup
     public boolean find(int key) {
         Tree234Node node = root;
         while (node != null) {

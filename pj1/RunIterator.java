@@ -25,6 +25,7 @@
  *  is modified after the RunIterator is constructed.  (Especially if it is
  *  modified by setPixel().)
  */
+package pj1;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

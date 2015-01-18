@@ -1,5 +1,6 @@
 /* PixImage.java */
 
+package pj1;
 
 /**
  * The PixImage class represents an image, which is a rectangular grid of

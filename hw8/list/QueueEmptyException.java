@@ -1,6 +1,4 @@
-/* QueueEmptyException.java */
-
-package list;
+package hw8.list;/* hw8.list.QueueEmptyException.java */
 
 public class QueueEmptyException extends Exception {
 

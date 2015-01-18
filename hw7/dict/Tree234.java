@@ -120,8 +120,13 @@ public class Tree234 extends IntDictionary {
                 if (node.key2 > node.parent.key1) {
                     node.parent.key2 = node.key2;
                     node.keys = 2;
-                    node.parent.keys++;
-
+                    node.parent.keys = 2;
+                    if (node.key1 < node.parent.child1.key1) {
+                        Tree234Node newChild = new Tree234Node(node.parent, node.key3);
+                        node.parent.child3 = node.parent.child2;
+                        node.parent.child2 = newChild;
+                        node.
+                    }
                 }
 
             }

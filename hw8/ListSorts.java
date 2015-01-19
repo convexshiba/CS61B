@@ -6,8 +6,6 @@ import hw8.list.*;
 
 public class ListSorts {
 
-    private final static int SORTSIZE = 1000;
-
     /**
      * makeQueueOfQueues() makes a queue of queues, each containing one item
      * of q.  Upon completion of this method, q is empty.
@@ -86,19 +84,17 @@ public class ListSorts {
     public static void partition(LinkedQueue qIn, Comparable pivot,
                                  LinkedQueue qSmall, LinkedQueue qEquals,
                                  LinkedQueue qLarge) {
-        while (!qIn.isEmpty()) {
-            try {
-                int compare = ((Comparable) qIn.front()).compareTo(pivot);
-                if (compare > 0) {
-                    qLarge.enqueue(qIn.dequeue());
-                } else if (compare < 0) {
-                    qSmall.enqueue(qIn.dequeue());
-                } else {
-                    qEquals.enqueue(qIn.dequeue());
-                }
-            } catch (QueueEmptyException e) {
-                e.printStackTrace();
+        while (!qIn.isEmpty()) try {
+            int compare = ((Comparable) qIn.front()).compareTo(pivot);
+            if (compare > 0) {
+                qLarge.enqueue(qIn.dequeue());
+            } else if (compare < 0) {
+                qSmall.enqueue(qIn.dequeue());
+            } else {
+                qEquals.enqueue(qIn.dequeue());
             }
+        } catch (QueueEmptyException e) {
+            e.printStackTrace();
         }
         // Your solution here.
     }
@@ -132,6 +128,19 @@ public class ListSorts {
      * @param q is a LinkedQueue of Comparable objects.
      */
     public static void quickSort(LinkedQueue q) {
+        if (q.size() <= 1) {
+            return;
+        }
+        int nth = (int) (q.size() * Math.random() + 1);
+        LinkedQueue lSmaller = new LinkedQueue();
+        LinkedQueue lLarger = new LinkedQueue();
+        LinkedQueue lEqual = new LinkedQueue();
+        partition(q, (Comparable) q.nth(nth), lSmaller, lEqual, lLarger);
+        quickSort(lSmaller);
+        quickSort(lLarger);
+        q.append(lSmaller);
+        q.append(lEqual);
+        q.append(lLarger);
         // Your solution here.
     }
 
@@ -156,33 +165,38 @@ public class ListSorts {
      */
     public static void main(String[] args) {
 
-        LinkedQueue q = makeRandom(0);
+        LinkedQueue q = makeRandom(10);
         System.out.println(q.toString());
         mergeSort(q);
         System.out.println(q.toString());
 
-//        q = makeRandom(10);
-//        System.out.println(q.toString());
-//        quickSort(q);
-//        System.out.println(q.toString());
+        q = makeRandom(10);
+        System.out.println(q.toString());
+        quickSort(q);
+        System.out.println(q.toString());
 
-    /* Remove these comments for Part III.
-    Timer stopWatch = new Timer();
-    q = makeRandom(SORTSIZE);
-    stopWatch.start();
-    mergeSort(q);
-    stopWatch.stop();
-    System.out.println("Mergesort time, " + SORTSIZE + " Integers:  " +
-                       stopWatch.elapsed() + " msec.");
+//    /* Remove these comments for Part III.
 
-    stopWatch.reset();
-    q = makeRandom(SORTSIZE);
-    stopWatch.start();
-    quickSort(q);
-    stopWatch.stop();
-    System.out.println("Quicksort time, " + SORTSIZE + " Integers:  " +
-                       stopWatch.elapsed() + " msec.");
-    */
+        int SORTSIZE;
+
+        for (SORTSIZE = 1000; SORTSIZE <= 1000000; SORTSIZE *= 10) {
+            Timer stopWatch = new Timer();
+            q = makeRandom(SORTSIZE);
+            stopWatch.start();
+            mergeSort(q);
+            stopWatch.stop();
+            System.out.println("Mergesort time, " + SORTSIZE + " Integers:  " +
+                    stopWatch.elapsed() + " msec.");
+
+            stopWatch.reset();
+            q = makeRandom(SORTSIZE);
+            stopWatch.start();
+            quickSort(q);
+            stopWatch.stop();
+            System.out.println("Quicksort time, " + SORTSIZE + " Integers:  " +
+                    stopWatch.elapsed() + " msec.");
+        }
+//    */
     }
 
 }

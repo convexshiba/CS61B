@@ -1,8 +1,9 @@
 /* Maze.java */
+package hw9;
 
 import java.util.*;
 
-import set.*;
+import hw9.set.*;
 
 /**
  * The Maze class represents a maze in a rectangular grid.  There is exactly
@@ -79,8 +80,27 @@ public class Maze {
          **/
 
 
+
     }
 
+    private int[] createRandomArray(int length) {
+        int[] randomArray = new int[length];
+
+        for (int i = 0; i < length; i++) {
+            randomArray[i] = i;
+        }
+
+        for (int counter = length - 1; counter > 0; counter--) {
+            swap(randomArray, counter, randInt(counter));
+        }
+        return randomArray;
+    }
+
+    private void swap(int[] list, int a, int b) {
+        int foo = list[a];
+        list[a] = list[b];
+        list[b] = foo;
+    }
     /**
      * toString() returns a string representation of the maze.
      */
@@ -266,32 +286,34 @@ public class Maze {
      * the maze, and runs the diagnostic method to see if the maze is good.
      */
     public static void main(String[] args) {
-        int x = 39;
-        int y = 15;
-
-        /**
-         *  Read the input parameters.
-         */
-
-        if (args.length > 0) {
-            try {
-                x = Integer.parseInt(args[0]);
-            } catch (NumberFormatException e) {
-                System.out.println("First argument to Simulation is not an number.");
-            }
-        }
-
-        if (args.length > 1) {
-            try {
-                y = Integer.parseInt(args[1]);
-            } catch (NumberFormatException e) {
-                System.out.println("Second argument to Simulation is not an number.");
-            }
-        }
-
+        int x = 5;
+        int y = 5;
+//
+//        /**
+//         *  Read the input parameters.
+//         */
+//
+//        if (args.length > 0) {
+//            try {
+//                x = Integer.parseInt(args[0]);
+//            } catch (NumberFormatException e) {
+//                System.out.println("First argument to Simulation is not an number.");
+//            }
+//        }
+//
+//        if (args.length > 1) {
+//            try {
+//                y = Integer.parseInt(args[1]);
+//            } catch (NumberFormatException e) {
+//                System.out.println("Second argument to Simulation is not an number.");
+//            }
+//        }
+//
         Maze maze = new Maze(x, y);
-        System.out.print(maze);
-        maze.diagnose();
+//        System.out.print(maze);
+//        maze.diagnose();
+
+        System.out.println(Arrays.toString(maze.createRandomArray(2)));
     }
 
 }

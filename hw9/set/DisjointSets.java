@@ -1,6 +1,6 @@
 /* DisjointSets.java */
 
-package set;
+package hw9.set;
 
 /**
  * A disjoint sets ADT.  Performs union-by-size and path compression.
@@ -41,6 +41,17 @@ public class DisjointSets {
      * @param root2 the root of the other set.
      */
     public void union(int root1, int root2) {
+        // error checking
+        if (root1 >= 0 || root2 >= 0) {
+            System.out.println("root1 >= 0 || root2 >= 0");
+            System.exit(0);
+        }
+
+        if (find(root1) == find(root2)) {
+            System.out.println("find(root1) == find(root2)");
+            System.exit(0);
+        }
+
         if (array[root2] < array[root1]) {                 // root2 has larger tree
             array[root2] += array[root1];        // update # of items in root2's tree
             array[root1] = root2;                              // make root2 new root

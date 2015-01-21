@@ -42,14 +42,15 @@ public class DisjointSets {
      */
     public void union(int root1, int root2) {
         // error checking
-        if (root1 >= 0 || root2 >= 0) {
+        if (array[root1] >= 0 || array[root2] >= 0) {
             System.out.println("root1 >= 0 || root2 >= 0");
+            Thread.dumpStack();
             System.exit(0);
         }
 
-        if (find(root1) == find(root2)) {
-            System.out.println("find(root1) == find(root2)");
-            System.exit(0);
+        if (isSameSet(root1, root2)) {
+            System.out.println("Same Set!!!!!!!!");
+            return;
         }
 
         if (array[root2] < array[root1]) {                 // root2 has larger tree
@@ -59,6 +60,10 @@ public class DisjointSets {
             array[root1] += array[root2];        // update # of items in root1's tree
             array[root2] = root1;                              // make root1 new root
         }
+    }
+
+    public boolean isSameSet(int root1, int root2) {
+        return find(root1) == find(root2);
     }
 
     /**

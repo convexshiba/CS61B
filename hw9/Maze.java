@@ -30,6 +30,9 @@ public class Maze {
     private static final int FROMABOVE = 3;
     private static final int FROMBELOW = 4;
 
+    private DisjointSets cells;
+
+
     /**
      * Maze() creates a rectangular maze having "horizontalSize" cells in the
      * horizontal direction, and "verticalSize" cells in the vertical direction.
@@ -42,6 +45,9 @@ public class Maze {
 
         horiz = horizontalSize;
         vert = verticalSize;
+
+        cells = new DisjointSets(horiz * vert);
+
         if ((horiz < 1) || (vert < 1) || ((horiz == 1) && (vert == 1))) {
             return;                                    // There are no interior walls
         }
@@ -79,8 +85,64 @@ public class Maze {
          * is run, so that you can make lots of different mazes.
          **/
 
+        int totalHWalls = hWalls.length * hWalls[0].length;
+        int totalVWalls = vWalls.length * vWalls[0].length;
+
+        int[] randHWallIndex = createRandomArray(totalHWalls);
+        int[] randVWallIndex = createRandomArray(totalVWalls);
 
 
+        int hWallIndex = 0;
+        int vWallIndex = 0;
+
+        while (hWallIndex != totalHWalls || vWallIndex != totalVWalls) {
+            int direction = randInt(2);
+
+            if (direction == 0) { // Visit Horizontal Walls ---
+                if (hWallIndex == totalHWalls) {
+                    continue;
+                } else {
+                    int hWallX = randHWallIndex[hWallIndex] % horizontalSize;
+                    int hWallY = randHWallIndex[hWallIndex] / horizontalSize;
+                    hWallExamine(hWallX, hWallY);
+                    hWallIndex++;
+                }
+            }
+
+            if (direction == 1) { // Visit Vertical Walls |
+                if (vWallIndex == totalVWalls) {
+                    continue;
+                } else {
+                    int vWallX = randVWallIndex[vWallIndex] % (horizontalSize - 1);
+                    int vWallY = randVWallIndex[vWallIndex] / (horizontalSize - 1);
+                    vWallExamine(vWallX, vWallY);
+                    vWallIndex++;
+                }
+            }
+
+        }
+    }
+
+    private void hWallExamine(int x, int y) {
+        if (!isCellSameSet(x, y, x, y + 1)) {
+            hWalls[x][y] = false;
+            unionCell(x, y, x, y + 1);
+        }
+    }
+
+    private void vWallExamine(int x, int y) {
+        if (!isCellSameSet(x, y, x + 1, y)) {
+            vWalls[x][y] = false;
+            unionCell(x, y, x + 1, y);
+        }
+    }
+
+    private void unionCell(int x1, int y1, int x2, int y2) {
+        cells.union(cells.find(y1 * horiz + x1), cells.find(y2 * horiz + x2));
+    }
+
+    private boolean isCellSameSet(int x1, int y1, int x2, int y2) {
+        return cells.isSameSet(y1 * horiz + x1, y2 * horiz + x2);
     }
 
     private int[] createRandomArray(int length) {
@@ -286,8 +348,8 @@ public class Maze {
      * the maze, and runs the diagnostic method to see if the maze is good.
      */
     public static void main(String[] args) {
-        int x = 5;
-        int y = 5;
+        int x = 10;
+        int y = 10;
 //
 //        /**
 //         *  Read the input parameters.
@@ -310,10 +372,11 @@ public class Maze {
 //        }
 //
         Maze maze = new Maze(x, y);
-//        System.out.print(maze);
+        System.out.print(maze);
 //        maze.diagnose();
 
-        System.out.println(Arrays.toString(maze.createRandomArray(2)));
+//        System.out.println(Arrays.toString(maze.createRandomArray(100)));
+//        System.out.println(randInt(1));
     }
 
 }

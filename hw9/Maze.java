@@ -348,8 +348,8 @@ public class Maze {
      * the maze, and runs the diagnostic method to see if the maze is good.
      */
     public static void main(String[] args) {
-        int x = 10;
-        int y = 10;
+        int x = 20;
+        int y = 20;
 //
 //        /**
 //         *  Read the input parameters.
@@ -373,10 +373,8 @@ public class Maze {
 //
         Maze maze = new Maze(x, y);
         System.out.print(maze);
-//        maze.diagnose();
+        maze.diagnose();
 
-//        System.out.println(Arrays.toString(maze.createRandomArray(100)));
-//        System.out.println(randInt(1));
     }
 
 }

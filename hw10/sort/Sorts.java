@@ -1,6 +1,6 @@
 /* Sorts.java */
 
-package sort;
+package hw10.sort;
 
 public class Sorts {
 

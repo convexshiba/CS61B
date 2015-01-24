@@ -2,6 +2,8 @@
 
 package hw10.sort;
 
+import java.util.Arrays;
+
 public class Sorts {
 
     /**
@@ -17,7 +19,7 @@ public class Sorts {
      * significant (sixteens) digit; and so on, up to a seven, which means
      * sort on the most significant digit.
      *
-     * @param key        is an array of ints.  Assume no key is negative.
+     * @param keys        is an array of ints.  Assume no key is negative.
      * @param whichDigit is a number in 0...7 specifying which base-16 digit
      *                   is the sort key.
      * @return an array of type int, having the same length as "keys"
@@ -26,30 +28,57 @@ public class Sorts {
      * Note:  Return a _newly_ created array.  DO NOT CHANGE THE ARRAY keys.
      */
     public static int[] countingSort(int[] keys, int whichDigit) {
+        int[] output = new int[keys.length];
+        int[] digits = new int[keys.length];
+
+        int[] counts = new int[16];
+
+        for (int i = 0; i < keys.length; i++) {
+            digits[i] = keys[i] >> whichDigit & 15;
+            counts[digits[i]]++;
+        }
+
+        int total = 0;
+        for (int i = 0; i < counts.length; i++) {
+            int foo = counts[i];
+            counts[i] = total;
+            total += foo;
+        }
+
+        for (int i = 0; i < keys.length; i++) {
+            output[counts[digits[i]]++] = keys[i];
+        }
+
         // Replace the following line with your solution.
-        return null;
+        return output;
     }
 
     /**
      * radixSort() sorts an array of int keys (using all 32 bits
      * of each key to determine the ordering).
      *
-     * @param key is an array of ints.  Assume no key is negative.
+     * @param keys is an array of ints.  Assume no key is negative.
      * @return an array of type int, having the same length as "keys"
      * and containing the same keys in sorted order.
      * <p/>
      * Note:  Return a _newly_ created array.  DO NOT CHANGE THE ARRAY keys.
      */
     public static int[] radixSort(int[] keys) {
+        int[] output = Arrays.copyOf(keys,keys.length);
+
+
+        for (int i = 0; i < 32; i++) {
+            output = countingSort(output, i);
+        }
         // Replace the following line with your solution.
-        return null;
+        return output;
     }
 
     /**
      * yell() prints an array of int keys.  Each key is printed in hexadecimal
      * (base 16).
      *
-     * @param key is an array of ints.
+     * @param keys is an array of ints.
      */
     public static void yell(int[] keys) {
         System.out.print("keys are [ ");
@@ -88,6 +117,10 @@ public class Sorts {
         yell(keys);
         keys = radixSort(keys);
         yell(keys);
+
+        int[] foo = new int[] {10,7,6,5,4,3,2,1,6,5,4,7,3,4,3,4,5,6,7,8,9,7,11,2,33,44,55};
+        System.out.println(Arrays.toString(radixSort(foo)));
+
     }
 
 }

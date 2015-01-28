@@ -3,6 +3,10 @@
 package pj3.graph;
 
 import hw5.list.DList;
+import hw5.list.InvalidNodeException;
+import hw5.list.ListNode;
+
+import java.util.Arrays;
 
 /**
  * The WUGraph class represents a weighted, undirected graph.  Self-edges are
@@ -11,11 +15,10 @@ import hw5.list.DList;
 
 public class WUGraph {
 
-    private HashTableAuto vertexTable;
-    private HashTableAuto edgeTable;
+    private HashTableAuto vertexTable = new HashTableAuto();
+    private HashTableAuto edgeTable = new HashTableAuto();
 
-    private DList vertexList;
-    private DList adjList;
+    private DList vertexList = new DList();
 
     /**
      * WUGraph() constructs a graph having no vertices or edges.
@@ -23,7 +26,6 @@ public class WUGraph {
      * Running time:  O(1).
      */
     public WUGraph() {
-
     }
 
     /**
@@ -32,7 +34,7 @@ public class WUGraph {
      * Running time:  O(1).
      */
     public int vertexCount() {
-        return 0;
+        return vertexTable.size();
     }
 
     /**
@@ -41,7 +43,7 @@ public class WUGraph {
      * Running time:  O(1).
      */
     public int edgeCount() {
-        return 0;
+        return edgeTable.size();
     }
 
     /**
@@ -57,7 +59,17 @@ public class WUGraph {
      * Running time:  O(|V|).
      */
     public Object[] getVertices() {
-        return new Object[2];
+        Object[] vertices = new Object[vertexList.length()];
+        ListNode node = vertexList.front();
+        for (int i = 0; i < vertices.length; i++) {
+            try {
+                vertices[i] = node.item();
+                node = node.next();
+            } catch (InvalidNodeException e) {
+                e.printStackTrace();
+            }
+        }
+        return vertices;
     }
 
     /**
@@ -68,6 +80,10 @@ public class WUGraph {
      * Running time:  O(1).
      */
     public void addVertex(Object vertex) {
+        if (vertexTable.find(vertex) == null) {
+            vertexList.insertFront(new InternalVertex(vertex));
+            vertexTable.insert(vertex, vertexList.front());
+        }
     }
 
     /**
@@ -176,6 +192,14 @@ public class WUGraph {
      */
     public int weight(Object u, Object v) {
         return 0;
+    }
+
+    public static void main(String[] args) {
+        WUGraph testDriver = new WUGraph();
+        testDriver.addVertex("123");
+        testDriver.addVertex("1");
+        System.out.println(Arrays.toString(testDriver.getVertices()));
+        System.out.println("end");
     }
 
 }

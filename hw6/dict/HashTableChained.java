@@ -24,8 +24,8 @@ public class HashTableChained implements Dictionary {
      * Place any data fields here.
      */
     public int hashSize;
-    SList[] hashList;
-    int entryNumber = 0;
+    protected SList[] hashList;
+    protected int entryNumber = 0;
     public int collision = 0;
 
     /**
@@ -45,7 +45,6 @@ public class HashTableChained implements Dictionary {
             hashSize = i;
             break;
         }
-        hashList = new SList[hashSize];
         arrayInit();
         // Your solution here.
     }
@@ -57,12 +56,12 @@ public class HashTableChained implements Dictionary {
 
     public HashTableChained() {
         hashSize = 101;
-        hashList = new SList[hashSize];
         arrayInit();
         // Your solution here.
     }
 
-    private void arrayInit() {
+    protected void arrayInit() {
+        hashList = new SList[hashSize];
         for (int i = 0; i < hashSize; i++) {
             hashList[i] = new SList();
         }

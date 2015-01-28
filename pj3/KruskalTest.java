@@ -3,9 +3,10 @@
 /**
  * The KruskalTest class tests the Kruskal class.
  */
+package pj3;
 
-import graph.*;
-import graphalg.*;
+import pj3.graph.*;
+import pj3.graphalg.*;
 import java.util.*;
 
 public class KruskalTest {

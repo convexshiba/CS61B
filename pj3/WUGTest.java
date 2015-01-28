@@ -4,7 +4,10 @@
  * The WUGTest class tests the WUGraph class.
  */
 
-import graph.*;
+package pj3;
+
+import pj3.graph.Neighbors;
+import pj3.graph.WUGraph;
 
 public class WUGTest {
 

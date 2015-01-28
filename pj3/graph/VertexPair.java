@@ -50,4 +50,13 @@ class VertexPair {
             return false;
         }
     }
+
+    public Object theOther(Object object) {
+        return object.equals(object1) ? object2 : object1;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + object1 + "|" + object2 + ")";
+    }
 }

@@ -191,9 +191,10 @@ public class HashTableChained implements Dictionary {
         while (currentNode.isValidNode()) {
             try {
                 if (((Entry) currentNode.item()).key().equals(key)) {
+                    Entry entry = (Entry) currentNode.item();
                     currentNode.remove();
                     entryNumber--;
-                    return ((Entry) currentNode.item());
+                    return entry;
                 } else {
                     currentNode = currentNode.next();
                 }

@@ -4,6 +4,7 @@ package pj3.graph;
 
 import hw5.list.DList;
 import hw5.list.InvalidNodeException;
+import hw5.list.List;
 import hw5.list.ListNode;
 
 import java.util.Arrays;
@@ -46,6 +47,19 @@ public class WUGraph {
         return edgeTable.size();
     }
 
+    private InternalVertex getInternal(Object vertex) {
+        try {
+            return (InternalVertex) ((ListNode) vertexTable.find(vertex).value()).item();
+        } catch (InvalidNodeException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private InternalEdge getInternal(VertexPair pair) {
+        return (InternalEdge) (edgeTable.find(pair).value());
+    }
+
     /**
      * getVertices() returns an array containing all the objects that serve
      * as vertices of the graph.  The array's length is exactly equal to the
@@ -63,7 +77,8 @@ public class WUGraph {
         ListNode node = vertexList.front();
         for (int i = 0; i < vertices.length; i++) {
             try {
-                vertices[i] = node.item();
+                InternalVertex internalVertex = (InternalVertex) node.item();
+                vertices[i] = internalVertex.getVertexObject();
                 node = node.next();
             } catch (InvalidNodeException e) {
                 e.printStackTrace();
@@ -94,7 +109,24 @@ public class WUGraph {
      * Running time:  O(d), where d is the degree of "vertex".
      */
     public void removeVertex(Object vertex) {
+        if (vertexTable.find(vertex) == null) {
+            return;
+        } else {
+            try {
+                InternalVertex internalVertex = getInternal(vertex);
+                while (!internalVertex.adjList.isEmpty()) {
 
+                    VertexPair pair = (VertexPair) internalVertex.adjList.front().item();
+                    getInternal(pair).deleteMe();
+                    edgeTable.remove(pair);
+                }
+                ListNode vertexNode = (ListNode) vertexTable.find(vertex).value();
+                vertexNode.remove();
+                vertexTable.remove(vertex);
+            } catch (InvalidNodeException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -104,7 +136,7 @@ public class WUGraph {
      * Running time:  O(1).
      */
     public boolean isVertex(Object vertex) {
-        return true;
+        return vertexTable.find(vertex) != null;
     }
 
     /**
@@ -115,7 +147,11 @@ public class WUGraph {
      * Running time:  O(1).
      */
     public int degree(Object vertex) {
-        return 0;
+        if (vertexTable.find(vertex) == null) {
+            return 0;
+        } else {
+            return (getInternal(vertex)).getDegree();
+        }
     }
 
     /**
@@ -137,7 +173,35 @@ public class WUGraph {
      * Running time:  O(d), where d is the degree of "vertex".
      */
     public Neighbors getNeighbors(Object vertex) {
-        return new Neighbors();
+        if (vertexTable.find(vertex) == null || degree(vertex) == 0) {
+            return null;
+        } else {
+            Neighbors neighbors = new Neighbors();
+            neighbors.neighborList = new Object[degree(vertex)];
+            neighbors.weightList = new int[degree(vertex)];
+
+            InternalVertex internalVertex = getInternal(vertex);
+            List pairList = internalVertex.adjList;
+            ListNode node = pairList.front();
+
+            for (int i = 0; i < degree(vertex); i++) {
+                try {
+
+                    VertexPair pair = (VertexPair) node.item();
+                    Object neighbor = pair.theOther(vertex);
+                    neighbors.neighborList[i] = neighbor;
+
+                    InternalEdge edge = getInternal(pair);
+                    neighbors.weightList[i] = edge.weight;
+                    node = node.next();
+
+                } catch (InvalidNodeException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return neighbors;
+        }
     }
 
     /**
@@ -151,6 +215,33 @@ public class WUGraph {
      */
     public void addEdge(Object u, Object v, int weight) {
 
+        if (vertexTable.find(u) == null || vertexTable.find(v) == null) {
+            return;
+        }
+
+        VertexPair pair = new VertexPair(u, v);
+
+        if (edgeTable.find(pair) == null) {
+            InternalEdge edge = new InternalEdge(u, v, weight);
+
+            ListNode node1;
+            ListNode node2;
+
+            node1 = (getInternal(u)).addEdge(pair);
+            edge.node1 = node1;
+
+            if (!u.equals(v)) {
+                node2 = (getInternal(v)).addEdge(pair);
+                edge.node2 = node2;
+                edge.self = false;
+            }
+
+            edgeTable.insert(pair, edge);
+        } else {
+            InternalEdge edge = (InternalEdge) edgeTable.find(pair).value();
+            edge.weight = weight;
+        }
+
     }
 
     /**
@@ -162,7 +253,19 @@ public class WUGraph {
      * Running time:  O(1).
      */
     public void removeEdge(Object u, Object v) {
+        if (vertexTable.find(u) == null || vertexTable.find(v) == null) {
+            return;
+        } else {
+            VertexPair pair = new VertexPair(u, v);
 
+            if (edgeTable.find(pair) != null) {
+                InternalEdge edge = getInternal(pair);
+                edge.deleteMe();
+                edgeTable.remove(pair);
+            } else {
+                return;
+            }
+        }
     }
 
     /**
@@ -173,7 +276,7 @@ public class WUGraph {
      * Running time:  O(1).
      */
     public boolean isEdge(Object u, Object v) {
-        return true;
+        return edgeTable.find(new VertexPair(u, v)) != null;
     }
 
     /**
@@ -191,15 +294,37 @@ public class WUGraph {
      * Running time:  O(1).
      */
     public int weight(Object u, Object v) {
-        return 0;
+        if (vertexTable.find(u) == null || vertexTable.find(v) == null || edgeTable.find(new VertexPair(u, v)) == null) {
+            return 0;
+        } else {
+            return getInternal(new VertexPair(u, v)).weight;
+        }
     }
 
     public static void main(String[] args) {
         WUGraph testDriver = new WUGraph();
         testDriver.addVertex("123");
         testDriver.addVertex("1");
+        testDriver.addVertex("1");
+        testDriver.addVertex("3");
+        testDriver.addVertex("9");
+
+        testDriver.addEdge("1", "1", 10);
+        testDriver.addEdge("1", "1", 1);
+        testDriver.addEdge("3", "123", 999999);
+        testDriver.addEdge("1", "3", 1);
+        testDriver.addEdge("3", "1", 1);
+        testDriver.addEdge("1", "1", 1);
+        testDriver.addEdge("1", "123", 999);
+        System.out.println(testDriver.edgeTable);
+
+        testDriver.removeVertex("1");
         System.out.println(Arrays.toString(testDriver.getVertices()));
+        System.out.println(testDriver.edgeTable);
         System.out.println("end");
+        System.out.println(testDriver.getNeighbors("9"));
+
+//        System.out.println(testDriver.degree("1"));
     }
 
 }
